@@ -1,0 +1,115 @@
+# Sudoku
+
+Un Sudoku nativo para Mac, sin anuncios, escrito en SwiftUI.
+
+Nació como una forma práctica de aprender Swift y los frameworks de Apple, así que el código
+prefiere APIs modernas e idiomáticas (`@Observable`, Swift Testing, concurrencia de Swift,
+SwiftData) y explica *por qué* hace las cosas como las hace.
+
+*[Read in English](README.md)*
+
+## Funcionalidades
+
+- **Tableros aleatorios con solución única** en tres niveles de dificultad, generados fuera del
+  hilo principal para que la ventana nunca se congele.
+- **Vidas** (de 1 a 5 o ilimitadas): cada error cuesta un corazón. Las respuestas correctas quedan
+  fijas y solo se pueden borrar los errores, así que una tecla pulsada por accidente no cuesta nada.
+- **Ayudas visuales**: resaltar la fila, la columna y el recuadro seleccionados; hacer brillar los
+  números iguales; recuadros 3×3 alternados; una selección que se desliza entre celdas.
+- **Progreso en el teclado numérico**: cada tecla se va llenando al colocar su número, y al
+  completar los nueve celebra y se convierte en una palomita.
+- **Celebraciones** al completar una fila, columna, recuadro o número, con el estilo que elijas
+  (Onda, Volteo, Salto, Destello o Ninguna) y una vista previa en los Ajustes. Confeti al ganar.
+- **Récords estilo arcade**: un top 10 por dificultad guardado con SwiftData. Escribes tu nombre al
+  hacer récord; el último se recuerda y los anteriores están a un clic. Cada récord muestra el
+  tiempo, las vidas usadas, los errores y la fecha.
+- **Tiempos justos**: pausa con ⌘P (el tablero se oculta mientras tanto) y pausa automática al
+  cambiar de app.
+- **Temas de color**: por defecto sigue el color de acento del Mac, o elige uno de ocho colores
+  ajustados para leerse bien en modo claro y oscuro.
+- **Accesibilidad**: etiquetas de VoiceOver en toda la app, y todas las animaciones respetan
+  "Reducir movimiento" (además de un ajuste propio, "Reducir animaciones").
+- **Localizado** en inglés y español, con cambio de idioma en los Ajustes sin reiniciar.
+- **Nativo de Mac**: barra de herramientas con Liquid Glass, comandos de menú con atajos de
+  teclado, ventana de Ajustes y una ventana aparte para los Récords.
+
+### Atajos de teclado
+
+| Atajo | Acción |
+|---|---|
+| 1–9 | Escribir un número en la celda seleccionada |
+| Flechas | Mover la selección |
+| ⌫ / ⌦ | Borrar un número incorrecto |
+| ⌘N | Nueva partida |
+| ⌘R | Borrar el tablero (pide confirmación) |
+| ⌘P | Pausar / reanudar |
+| ⌘L | Abrir la ventana de Récords |
+| ⌘, | Ajustes |
+
+## Requisitos
+
+- macOS 27 o posterior
+- Xcode 27 o posterior
+
+El proyecto no tiene dependencias externas.
+
+## Primeros pasos
+
+1. Clona el repositorio:
+
+   ```sh
+   git clone https://github.com/vg0904/Sudoku.git
+   ```
+
+2. Abre `Sudoku.xcodeproj` en Xcode.
+3. **Configura la firma.** El proyecto viene con el equipo de desarrollo del autor. En el editor
+   del proyecto, selecciona el target **Sudoku** → **Signing & Capabilities** y elige tu propio
+   equipo (sirve un equipo personal gratuito). Si Xcode dice que el identificador del bundle ya está
+   en uso, cámbialo por uno único, como `com.tunombre.Sudoku`.
+
+   Por favor, no incluyas estos cambios de firma en tus pull requests.
+4. Pulsa **⌘R** para compilar y ejecutar.
+
+## Ejecutar las pruebas
+
+La lógica está cubierta por más de 200 pruebas escritas con
+[Swift Testing](https://developer.apple.com/documentation/testing).
+
+- En Xcode: **⌘U**, o abre el navegador de pruebas (**⌘6**).
+- Desde la terminal:
+
+  ```sh
+  xcodebuild test -project Sudoku.xcodeproj -scheme Sudoku -destination 'platform=macOS'
+  ```
+
+Las pruebas nunca tocan tus datos reales: los ajustes usan un `UserDefaults` aislado y los récords
+una base de datos de SwiftData en memoria.
+
+## Estructura del proyecto
+
+```
+Sudoku/
+├── Model/      Lógica pura del juego: la cuadrícula, el generador, la dificultad, los récords.
+├── Game/       El estado de la partida (`SudokuGame`), el reloj y los avisos de celebración.
+├── Settings/   Los ajustes (guardados en UserDefaults) y la ventana de Ajustes.
+├── Views/      Vistas de SwiftUI: tablero, celdas, teclado, superposiciones, confeti, récords.
+└── SudokuApp.swift   Las escenas (juego, Récords, Ajustes) y los comandos de menú.
+SudokuTests/    Suites de Swift Testing, un archivo por área.
+```
+
+Para ver cómo encajan las piezas, y las decisiones poco evidentes detrás de ellas, consulta
+**[ARCHITECTURE.md](docs/ARCHITECTURE.md)** (en inglés).
+
+## Contribuir
+
+¡Las contribuciones son bienvenidas! Lee primero **[CONTRIBUTING.md](CONTRIBUTING.md)** (en
+inglés): explica las convenciones de las que depende el proyecto (aislamiento de actores,
+localización, animaciones y pruebas).
+
+Sobre el idioma: **los comentarios del código están en español**, mientras que los identificadores,
+las claves de texto y la documentación están en inglés. En las contribuciones se aceptan comentarios
+en cualquiera de los dos idiomas.
+
+## Licencia
+
+Sudoku se publica bajo la [licencia MIT](LICENSE).
