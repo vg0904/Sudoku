@@ -750,6 +750,16 @@
         }
       }
     },
+    "Report a Problem…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Informar de un problema…"
+          }
+        }
+      }
+    },
     "Restart" : {
       "localizations" : {
         "es" : {
@@ -906,6 +916,16 @@
         }
       }
     },
+    "Sudoku Help" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Ayuda de Sudoku"
+          }
+        }
+      }
+    },
     "System" : {
       "localizations" : {
         "es" : {
@@ -972,6 +992,16 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "Sin límite"
+          }
+        }
+      }
+    },
+    "View Source Code" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Ver el código fuente"
           }
         }
       }

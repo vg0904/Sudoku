@@ -36,7 +36,10 @@ struct SudokuApp: App {
                 .appEnvironment(settings)
         }
         .modelContainer(recordsContainer)
-        .commands { GameCommands() }
+        .commands {
+            GameCommands()
+            HelpCommands(locale: settings.language.effectiveLocale)
+        }
         #if os(macOS)
         .defaultSize(width: 520, height: 720)
         .windowResizability(.contentMinSize)
@@ -139,5 +142,43 @@ struct GameCommands: Commands {
             }
             #endif
         }
+    }
+}
+
+/// El menú **Ayuda**.
+///
+/// Sin esto, macOS pone un "Ayuda de Sudoku" que solo dice que no hay ayuda disponible. Aquí lleva
+/// a la documentación y a los issues del repositorio en GitHub.
+struct HelpCommands: Commands {
+    /// El idioma de la app, para abrir el README en español o en inglés.
+    let locale: Locale
+
+    @Environment(\.openURL) private var openURL
+
+    private static let repository = "https://github.com/vg0904/Sudoku"
+
+    var body: some Commands {
+        CommandGroup(replacing: .help) {
+            Button("Sudoku Help") {
+                let readme = locale.language.languageCode == .spanish ? "README.es.md" : "README.md"
+                open("\(Self.repository)/blob/main/\(readme)")
+            }
+            .keyboardShortcut("?", modifiers: .command)
+
+            Button("Report a Problem…") {
+                open("\(Self.repository)/issues/new")
+            }
+
+            Divider()
+
+            Button("View Source Code") {
+                open(Self.repository)
+            }
+        }
+    }
+
+    private func open(_ address: String) {
+        guard let url = URL(string: address) else { return }
+        openURL(url)
     }
 }

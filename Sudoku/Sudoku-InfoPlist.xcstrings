@@ -18,6 +18,24 @@
           }
         }
       }
+    },
+    "NSHumanReadableCopyright" : {
+      "comment" : "Copyright (human-readable)",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copyright © 2026 Victor Gabriel Guerra Garza. Released under the MIT License."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Copyright © 2026 Victor Gabriel Guerra Garza. Publicado bajo la licencia MIT."
+          }
+        }
+      }
     }
   },
   "version" : "1.3"
