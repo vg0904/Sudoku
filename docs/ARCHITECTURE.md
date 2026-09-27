@@ -63,6 +63,20 @@ Some rules worth knowing:
   use fixed dates. `TimerLabel` redraws once a second with a `TimelineView`, so only that label
   refreshes, not the 81 cells.
 
+### Saving and resuming
+
+A game in progress survives quitting the app:
+
+- `snapshot(now:)` turns the game into a `SavedGame`, a plain `Codable` value. It returns `nil`
+  when there's nothing worth resuming (no puzzle yet, generating, or finished).
+- `saveRevision` goes up on every change worth saving (a move, an erase, a pause, a new game).
+  `ContentView` watches that single value and writes the snapshot through `SavedGameStore`, so the
+  model never knows where or how it's stored. On quit (⌘Q), the game is paused and saved once
+  more so the seconds since the last move aren't lost.
+- On launch, `restore(_:)` brings the game back **paused**, so the clock doesn't run while the
+  window opens. A snapshot that fails `isValid` (damaged data, or a different `formatVersion`) is
+  ignored and a new game starts instead.
+
 ### Events: the model says *what*, the view says *how*
 
 Animations are triggered by small events the game publishes:

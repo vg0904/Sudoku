@@ -130,6 +130,10 @@ Text lives in `Sudoku/Localizable.xcstrings` (English is the base language, plus
 - **Settings** are stored in `UserDefaults` through `GameSettings`. It takes the `UserDefaults`
   instance in its initialiser so tests can use an isolated suite. Read values with
   `object(forKey:)` so "never saved" can be told apart from `false` or `0`.
+- **The game in progress** is saved as JSON in `UserDefaults` (`SavedGame` + `SavedGameStore`)
+  after every change. If you add a property that needs to survive a relaunch, add it to
+  `SavedGame` and **bump `currentFormatVersion`**: saves from an older version are discarded
+  instead of being restored half-filled.
 - **Records** use SwiftData (`GameRecord` + `RecordStore`). There is a single `ModelContainer`,
   created in `SudokuApp` and shared by every scene.
 - **In SwiftData, `fetchOffset` is ignored unless you also set `fetchLimit`.** This once deleted

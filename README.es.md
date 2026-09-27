@@ -8,6 +8,39 @@ SwiftData) y explica *por qué* hace las cosas como las hace.
 
 *[Read in English](README.md)*
 
+## Descargar
+
+Descarga `Sudoku.zip` desde la [última versión](https://github.com/vg0904/Sudoku/releases/latest),
+descomprímelo y mueve **Sudoku** a tu carpeta Aplicaciones.
+
+### Abrir la app por primera vez
+
+La app no está notarizada por Apple ([aquí explico por qué](#sobre-este-proyecto)), así que la
+primera vez que la abras macOS dirá que no puede verificar al desarrollador. Solo hay que
+permitirla una vez:
+
+1. Abre **Sudoku**. Cuando macOS muestre el aviso, pulsa **OK**.
+2. Abre **Ajustes del Sistema → Privacidad y seguridad**.
+3. Baja hasta la sección **Seguridad**. Junto al mensaje sobre Sudoku, pulsa **Abrir igualmente** y
+   confirma con tu contraseña o Touch ID.
+4. Pulsa **Abrir** en el cuadro de diálogo que aparece.
+
+A partir de entonces se abre como cualquier otra app.
+
+<details>
+<summary>¿Prefieres la Terminal?</summary>
+
+Esto quita la marca de cuarentena que macOS pone a los archivos descargados:
+
+```sh
+xattr -dr com.apple.quarantine /Applications/Sudoku.app
+```
+
+</details>
+
+Si prefieres no abrir una app sin notarizar, puedes [compilarla tú](#primeros-pasos) desde el
+código fuente en unos minutos.
+
 ## Funcionalidades
 
 - **Tableros aleatorios con solución única** en tres niveles de dificultad, generados fuera del
@@ -25,10 +58,13 @@ SwiftData) y explica *por qué* hace las cosas como las hace.
   tiempo, las vidas usadas, los errores y la fecha.
 - **Tiempos justos**: pausa con ⌘P (el tablero se oculta mientras tanto) y pausa automática al
   cambiar de app.
+- **La partida se guarda**: cierra la app cuando quieras y sigue donde lo dejaste la próxima vez que
+  la abras.
 - **Temas de color**: por defecto sigue el color de acento del Mac, o elige uno de ocho colores
   ajustados para leerse bien en modo claro y oscuro.
-- **Accesibilidad**: etiquetas de VoiceOver en toda la app, y todas las animaciones respetan
-  "Reducir movimiento" (además de un ajuste propio, "Reducir animaciones").
+- **Accesibilidad**: VoiceOver lee el número y el estado de cada celda, y también puede decir su
+  fila y columna. Todas las animaciones respetan "Reducir movimiento", además de un ajuste propio,
+  "Reducir animaciones".
 - **Localizado** en inglés y español, con cambio de idioma en los Ajustes sin reiniciar.
 - **Nativo de Mac**: barra de herramientas con Liquid Glass, comandos de menú con atajos de
   teclado, ventana de Ajustes y una ventana aparte para los Récords.
@@ -99,6 +135,18 @@ SudokuTests/    Suites de Swift Testing, un archivo por área.
 
 Para ver cómo encajan las piezas, y las decisiones poco evidentes detrás de ellas, consulta
 **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** (en inglés).
+
+## Sobre este proyecto
+
+Soy estudiante, y este Sudoku es un proyecto que hago por hobby. Lo construí para aprender Swift y
+los frameworks de Apple a fondo, haciendo algo que de verdad quería usar: un Sudoku limpio para mi
+Mac, sin anuncios ni rastreo. Lo comparto para que otras personas puedan jugarlo, leer el código,
+aprender de él y ayudar a mejorarlo.
+
+No gano dinero con él, ni es mi intención. Por eso tampoco está notarizado: la notarización exige
+pagar el Apple Developer Program (99 USD al año), algo que no tiene sentido para un proyecto
+gratuito hecho para aprender. Todo el código fuente está aquí, así que siempre puedes comprobar qué
+hace exactamente la app, o compilarla tú.
 
 ## Contribuir
 
