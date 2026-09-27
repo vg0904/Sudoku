@@ -43,7 +43,7 @@ struct SettingsView: View {
 
             Tab("Game", systemImage: "square.grid.3x3", value: .game) {
                 gameTab
-                    .frame(width: 440, height: 520)
+                    .frame(width: 440, height: 600)
             }
         }
     }
@@ -121,8 +121,14 @@ struct SettingsView: View {
 
             Section {
                 Toggle("Reduce animations", isOn: reduceEffectsBinding)
+                Toggle("Include row and column in VoiceOver", isOn: announcesCellPositionBinding)
+            } header: {
+                Text("Accessibility")
             } footer: {
-                Text("Animations are also reduced automatically when Reduce Motion is on in System Settings.")
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Animations are also reduced automatically when Reduce Motion is on in System Settings.")
+                    Text("VoiceOver always reads each cell's number and state. This adds its position.")
+                }
             }
         }
         .formStyle(.grouped)
@@ -185,6 +191,10 @@ struct SettingsView: View {
 
     private var celebrationStyleBinding: Binding<CelebrationStyle> {
         Binding { settings.celebrationStyle } set: { settings.celebrationStyle = $0 }
+    }
+
+    private var announcesCellPositionBinding: Binding<Bool> {
+        Binding { settings.announcesCellPosition } set: { settings.announcesCellPosition = $0 }
     }
 
     private var reduceEffectsBinding: Binding<Bool> {

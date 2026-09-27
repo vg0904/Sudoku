@@ -40,6 +40,7 @@ struct GameSettingsTests {
         #expect(!settings.reduceEffects)
         #expect(settings.celebrationStyle == .wave)
         #expect(settings.theme == .system)
+        #expect(!settings.announcesCellPosition, "El detalle de VoiceOver es opcional")
     }
 
     // MARK: - Vidas
@@ -88,6 +89,7 @@ struct GameSettingsTests {
         first.reduceEffects = true
         first.celebrationStyle = .flip
         first.theme = .green
+        first.announcesCellPosition = true
 
         let second = GameSettings(defaults: defaults)
 
@@ -99,6 +101,7 @@ struct GameSettingsTests {
         #expect(second.reduceEffects)
         #expect(second.celebrationStyle == .flip)
         #expect(second.theme == .green)
+        #expect(second.announcesCellPosition)
     }
 
     @Test("Un ajuste booleano guardado como false se distingue de no guardado")

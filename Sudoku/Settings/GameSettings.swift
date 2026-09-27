@@ -24,6 +24,7 @@ final class GameSettings {
         static let reduceEffects = "settings.reduceEffects"
         static let celebrationStyle = "settings.celebrationStyle"
         static let theme = "settings.theme"
+        static let announcesCellPosition = "settings.announcesCellPosition"
     }
 
     private let defaults: UserDefaults
@@ -64,6 +65,15 @@ final class GameSettings {
         didSet { defaults.set(theme.rawValue, forKey: Key.theme) }
     }
 
+    /// Añadir la fila y la columna a lo que VoiceOver lee de cada celda.
+    ///
+    /// Las celdas siempre tienen etiqueta ("5, pista"); esto solo añade la posición ("Fila 3,
+    /// columna 5: 5, pista") para quien quiera más detalle. Está desactivado por defecto porque
+    /// repetirlo en cada celda puede resultar pesado.
+    var announcesCellPosition: Bool {
+        didSet { defaults.set(announcesCellPosition, forKey: Key.announcesCellPosition) }
+    }
+
     /// Cómo se celebra completar una fila, columna o caja.
     var celebrationStyle: CelebrationStyle {
         didSet { defaults.set(celebrationStyle.rawValue, forKey: Key.celebrationStyle) }
@@ -94,5 +104,6 @@ final class GameSettings {
             .flatMap(CelebrationStyle.init(rawValue:)) ?? .wave
         self.theme = (defaults.string(forKey: Key.theme))
             .flatMap(AppTheme.init(rawValue:)) ?? .system
+        self.announcesCellPosition = defaults.object(forKey: Key.announcesCellPosition) as? Bool ?? false
     }
 }

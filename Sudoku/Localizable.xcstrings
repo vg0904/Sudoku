@@ -87,6 +87,26 @@
         }
       }
     },
+    "%lld, given" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "%lld, pista"
+          }
+        }
+      }
+    },
+    "%lld, wrong" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "%lld, error"
+          }
+        }
+      }
+    },
     "^[%lld life](inflect: true)" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -94,6 +114,16 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "^[%lld vida](inflect: true)"
+          }
+        }
+      }
+    },
+    "Accessibility" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Accesibilidad"
           }
         }
       }
@@ -144,6 +174,16 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "Azul"
+          }
+        }
+      }
+    },
+    "Board" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Tablero"
           }
         }
       }
@@ -309,6 +349,16 @@
         }
       }
     },
+    "Empty" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Vacía"
+          }
+        }
+      }
+    },
     "English" : {
       "localizations" : {
         "es" : {
@@ -425,6 +475,16 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "Resaltar fila, columna y recuadro"
+          }
+        }
+      }
+    },
+    "Include row and column in VoiceOver" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Incluir fila y columna en VoiceOver"
           }
         }
       }
@@ -740,6 +800,22 @@
         }
       }
     },
+    "Row %lld, column %lld: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Row %1$lld, column %2$lld: %3$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Fila %lld, columna %lld: %@"
+          }
+        }
+      }
+    },
     "Save" : {
       "localizations" : {
         "es" : {
@@ -906,6 +982,16 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "Ayudas visuales"
+          }
+        }
+      }
+    },
+    "VoiceOver always reads each cell's number and state. This adds its position." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "VoiceOver siempre lee el número y el estado de cada celda. Esto añade su posición."
           }
         }
       }

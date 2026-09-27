@@ -56,11 +56,21 @@ struct BoardView: View {
                                 sideLength: cellSide
                             )
                             .onTapGesture { game.select(index) }
+                            // VoiceOver: cada celda es un botón con su número y su estado. Sin
+                            // esto leería solo "5", o nada en una vacía, sin saber si es pista o
+                            // error. Las etiquetas solo suenan con VoiceOver activado.
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel(accessibilityLabel(forCellAt: index))
+                            .accessibilityAddTraits(.isButton)
+                            .accessibilityAddTraits(game.selectedIndex == index ? .isSelected : [])
+                            .accessibilityAction { game.select(index) }
                         }
                     }
                 }
             }
             .frame(width: side, height: side)
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Board")
             // Las capas de fondo quedan debajo de las celdas. Como el fondo de cada celda es
             // translúcido, se siguen viendo a través.
             .background {
@@ -110,6 +120,28 @@ struct BoardView: View {
                 (index, CellPulse(celebrationID: celebration.id, delay: Double(position) * step))
             }
         )
+    }
+
+    /// Lo que VoiceOver lee de una celda: su número y su estado ("5, pista", "Vacía"), y además su
+    /// posición si está activado en los ajustes ("Fila 3, columna 5: 5, pista").
+    ///
+    /// Devuelve `Text` y no `String` para que las frases se traduzcan: `Text(unString)` no
+    /// localiza.
+    private func accessibilityLabel(forCellAt index: Int) -> Text {
+        let value = game.value(at: index)
+        let content = switch game.state(at: index) {
+        case .empty: Text("Empty")
+        case .given: Text("\(value), given")
+        case .filled: Text("\(value)")
+        case .wrong: Text("\(value), wrong")
+        }
+
+        guard settings.announcesCellPosition else { return content }
+
+        // Desde 1, como se cuentan en voz alta.
+        let row = SudokuGrid.row(of: index) + 1
+        let column = SudokuGrid.column(of: index) + 1
+        return Text("Row \(row), column \(column): \(content)")
     }
 
     /// El resaltado de la celda seleccionada, colocado encima de ella.
