@@ -56,6 +56,13 @@ final class SudokuGame {
     /// `true` mientras la partida está en pausa: el reloj no corre y no se aceptan jugadas.
     private(set) var isPaused = false
 
+    /// Sube cada vez que cambia algo que merece guardarse: una jugada, un borrado, una pausa o una
+    /// partida nueva.
+    ///
+    /// Es la señal para que la vista guarde la partida. Así el modelo no sabe nada de dónde ni
+    /// cómo se guarda, y la vista no tiene que vigilar cada propiedad por separado.
+    private(set) var saveRevision = 0
+
     /// `true` mientras se construye un tablero nuevo.
     private(set) var isGenerating = false
 
@@ -245,18 +252,24 @@ final class SudokuGame {
         lastMistake = nil
         isEligibleForRecords = true
         isPaused = false
+        saveRevision += 1
         celebration = nil
         clock.restart(at: now)
     }
 
     // MARK: - Pausa
 
+    /// `true` si hay una partida a medias: con tablero, sin generarse y sin terminar.
+    var isInProgress: Bool {
+        puzzle.solution.isComplete && !isGenerating && !isSolved && !isDefeated
+    }
+
     /// `true` si hay una partida en marcha que se pueda pausar.
     ///
     /// No se pausa mientras se genera el tablero (el reloj aún no corre) ni con la partida
     /// terminada (el reloj ya se detuvo).
     var canPause: Bool {
-        puzzle.solution.isComplete && !isGenerating && !isSolved && !isDefeated
+        isInProgress
     }
 
     /// Detiene el reloj y bloquea las jugadas. No hace nada si no se puede pausar o ya lo está.
@@ -264,6 +277,7 @@ final class SudokuGame {
         guard canPause, !isPaused else { return }
         isPaused = true
         clock.stop(at: now)
+        saveRevision += 1
     }
 
     /// Vuelve a poner en marcha el reloj desde donde se quedó.
@@ -275,6 +289,56 @@ final class SudokuGame {
 
     func togglePause(now: Date = .now) {
         isPaused ? resume(now: now) : pause(now: now)
+    }
+
+    // MARK: - Guardar y retomar
+
+    /// La foto de la partida para guardarla, o `nil` si no hay ninguna a medias que valga la pena
+    /// retomar (sin tablero, generándose o ya terminada).
+    func snapshot(now: Date = .now) -> SavedGame? {
+        guard isInProgress else { return nil }
+
+        return SavedGame(
+            board: puzzle.board.cells,
+            solution: puzzle.solution.cells,
+            difficulty: puzzle.difficulty,
+            entries: entries,
+            wrongIndices: wrongIndices.sorted(),
+            mistakeCount: mistakeCount,
+            elapsed: clock.elapsed(at: now),
+            maxLives: maxLives,
+            selectedIndex: selectedIndex,
+            isEligibleForRecords: isEligibleForRecords
+        )
+    }
+
+    /// Retoma una partida guardada. Devuelve `false`, sin tocar nada, si la foto no es válida.
+    ///
+    /// La partida vuelve **en pausa**: el tablero sigue oculto y el reloj parado hasta que quien
+    /// juega pulse Reanudar. Si arrancara sola, el tiempo correría mientras la ventana se abre.
+    @discardableResult
+    func restore(_ saved: SavedGame) -> Bool {
+        guard saved.isValid else { return false }
+
+        puzzle = Puzzle(
+            board: SudokuGrid(cells: saved.board),
+            solution: SudokuGrid(cells: saved.solution),
+            difficulty: saved.difficulty
+        )
+        difficulty = saved.difficulty
+        entries = saved.entries
+        wrongIndices = Set(saved.wrongIndices)
+        mistakeCount = saved.mistakeCount
+        maxLives = saved.maxLives
+        selectedIndex = saved.selectedIndex
+        isEligibleForRecords = saved.isEligibleForRecords
+        clock = GameClock(elapsed: saved.elapsed)
+        celebration = nil
+        lastMistake = nil
+        isGenerating = false
+        isPaused = true
+
+        return true
     }
 
     // MARK: - Jugadas
@@ -316,6 +380,8 @@ final class SudokuGame {
         if isSolved || isDefeated {
             clock.stop(at: now)
         }
+
+        saveRevision += 1
     }
 
     /// Cierra la celebración en curso. La llama la vista cuando acaba la animación.
@@ -423,6 +489,7 @@ final class SudokuGame {
         guard !isPaused, canClearSelection, let index = selectedIndex else { return }
         entries[index] = 0
         wrongIndices.remove(index)
+        saveRevision += 1
     }
 
     /// Mueve la selección por el tablero, sin salirse de los bordes.

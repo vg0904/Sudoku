@@ -24,6 +24,11 @@ nonisolated struct GameClock: Equatable, Sendable {
 
     init() {}
 
+    /// Un reloj detenido que ya lleva `elapsed` segundos, para retomar una partida guardada.
+    init(elapsed: TimeInterval) {
+        accumulated = max(0, elapsed)
+    }
+
     /// Arranca el cronómetro. No hace nada si ya estaba corriendo.
     mutating func start(at now: Date) {
         guard startedAt == nil else { return }

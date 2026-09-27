@@ -48,6 +48,16 @@ struct ContentView: View {
         RecordStore(context: modelContext)
     }
 
+    // MARK: Partida guardada
+
+    /// Dónde se guarda la partida en curso. Se inyecta para que las previews usen uno aislado y no
+    /// pisen la partida guardada de verdad.
+    private let savedGameStore: SavedGameStore
+
+    init(savedGameStore: SavedGameStore = SavedGameStore()) {
+        self.savedGameStore = savedGameStore
+    }
+
     /// Los caracteres que Mac puede enviar al pulsar ⌫ o ⌦.
     private static let deleteCharacters = CharacterSet(charactersIn: "\u{8}\u{7F}\u{F728}")
 
@@ -149,13 +159,38 @@ struct ContentView: View {
             }
         }
         .task {
+            // Si hay una partida a medias, se retoma (en pausa). Si no, se empieza una nueva.
+            if let saved = savedGameStore.load(), game.restore(saved) {
+                isBoardFocused = true
+                return
+            }
+
             game.maxLives = settings.maxLives
             await game.newGame(difficulty: game.difficulty)
             isBoardFocused = true
         }
         .onChange(of: game.difficulty) { _, newDifficulty in
+            // Solo cuando cambia la dificultad del selector. Al retomar una partida guardada,
+            // `difficulty` también cambia, pero ya coincide con la del tablero y no hay que generar
+            // otro.
+            guard newDifficulty != game.puzzle.difficulty else { return }
             Task { await game.newGame(difficulty: newDifficulty) }
         }
+        // Guarda tras cada jugada, borrado, pausa o partida nueva. Si la partida acaba de
+        // terminar, `snapshot()` es `nil` y la foto guardada se borra.
+        .onChange(of: game.saveRevision) {
+            savedGameStore.save(game.snapshot())
+        }
+        #if os(macOS)
+        // Al salir con ⌘Q la ventana no llega a perder el foco, así que no se pausa sola: se pausa
+        // y se guarda aquí para no perder los segundos jugados desde la última jugada.
+        .task {
+            for await _ in NotificationCenter.default.notifications(named: NSApplication.willTerminateNotification) {
+                game.pause()
+                savedGameStore.save(game.snapshot())
+            }
+        }
+        #endif
         // Cambiar las vidas obliga a empezar de nuevo, y es el único ajuste que lo hace: los demás
         // se aplican en vivo porque no alteran el estado del tablero. La confirmación ya se pidió
         // en la ventana de ajustes.
@@ -383,7 +418,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ContentView(savedGameStore: SavedGameStore(defaults: UserDefaults(suiteName: "preview") ?? .standard))
         .environment(GameSettings(defaults: UserDefaults(suiteName: "preview") ?? .standard))
         // En memoria: los récords de la preview no se mezclan con los de verdad.
         .modelContainer(for: GameRecord.self, inMemory: true)
