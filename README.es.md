@@ -8,38 +8,62 @@ SwiftData) y explica *por qué* hace las cosas como las hace.
 
 *[Read in English](README.md)*
 
-## Descargar
+## ¿Solo quieres jugar?
 
-Descarga `Sudoku.zip` desde la [última versión](https://github.com/vg0904/Sudoku/releases/latest),
-descomprímelo y mueve **Sudoku** a tu carpeta Aplicaciones.
+No necesitas saber nada de programación. Solo necesitas un Mac con **macOS 27 o posterior**.
 
-### Abrir la app por primera vez
+### 1. Descárgalo
 
-La app no está notarizada por Apple ([aquí explico por qué](#sobre-este-proyecto)), así que la
-primera vez que la abras macOS dirá que no puede verificar al desarrollador. Solo hay que
-permitirla una vez:
+1. Entra en la [última versión](https://github.com/vg0904/Sudoku/releases/latest).
+2. En **Assets**, haz clic en **Sudoku.zip**. Se guarda en tu carpeta **Descargas**.
+3. Abre **Descargas** y haz doble clic en **Sudoku.zip**. Aparece la app **Sudoku** al lado.
+4. Arrastra **Sudoku** a tu carpeta **Aplicaciones**.
 
-1. Abre **Sudoku**. Cuando macOS muestre el aviso, pulsa **OK**.
-2. Abre **Ajustes del Sistema → Privacidad y seguridad**.
-3. Baja hasta la sección **Seguridad**. Junto al mensaje sobre Sudoku, pulsa **Abrir igualmente** y
-   confirma con tu contraseña o Touch ID.
-4. Pulsa **Abrir** en el cuadro de diálogo que aparece.
+### 2. Ábrelo por primera vez
 
-A partir de entonces se abre como cualquier otra app.
+Como Sudoku es un proyecto gratuito y no está registrado con Apple
+([aquí explico por qué](#sobre-este-proyecto)), la primera vez que lo abras tu Mac mostrará un aviso
+diciendo que no puede comprobar la app. Es normal. Solo hay que permitirla **una vez**:
 
-<details>
-<summary>¿Prefieres la Terminal?</summary>
+1. Haz doble clic en **Sudoku** dentro de Aplicaciones. Cuando aparezca el aviso, ciérralo con el
+   botón de aceptar (no con el de mover a la papelera).
+2. Abre **Ajustes del Sistema** (el icono gris de engranaje del Dock, o  → Ajustes del Sistema).
+3. En la barra lateral, haz clic en **Privacidad y seguridad**.
+4. Baja hasta la sección **Seguridad**. Verás un mensaje sobre Sudoku: haz clic en
+   **Abrir igualmente** y escribe la contraseña de tu Mac o usa Touch ID.
+5. Haz clic en **Abrir**.
 
-Esto quita la marca de cuarentena que macOS pone a los archivos descargados:
+Listo. A partir de ahora, Sudoku se abre como cualquier otra app.
 
-```sh
-xattr -dr com.apple.quarantine /Applications/Sudoku.app
-```
+### 3. Juega
 
-</details>
+- **Haz clic en una celda** y **escribe un número** con el teclado, o haz clic en uno del teclado
+  numérico de abajo. También puedes moverte con las flechas.
+- Cada fila, cada columna y cada recuadro de 3×3 debe tener todos los números del 1 al 9, sin
+  repetir ninguno.
+- Un número equivocado se pone en rojo y te quita un corazón ♥. Selecciónalo y pulsa **Borrar** (⌫)
+  para quitarlo.
+- El teclado numérico muestra cuántos llevas de cada número; una ✓ indica que ya están los nueve.
+- Elige la dificultad arriba de la ventana y pulsa ⌘P para pausar. La partida se guarda al cerrar
+  la app, así que puedes seguir más tarde.
+- Los colores, las vidas, las celebraciones y más están en **Sudoku → Ajustes** (⌘,).
 
-Si prefieres no abrir una app sin notarizar, puedes [compilarla tú](#primeros-pasos) desde el
-código fuente en unos minutos.
+### ¿Algo salió mal?
+
+- **No aparece el botón "Abrir igualmente":** primero intenta abrir Sudoku una vez (paso 1) y luego
+  vuelve a mirar en Ajustes del Sistema. El botón solo aparece después de intentar abrir la app.
+- **El aviso dice que la app está dañada:** a veces pasa con apps descargadas. Abre la app
+  **Terminal**, pega la línea de abajo, pulsa Intro y vuelve a abrir Sudoku:
+
+  ```sh
+  xattr -dr com.apple.quarantine /Applications/Sudoku.app
+  ```
+
+- **¿Sigues atascado o encontraste un error?** En Sudoku, elige **Ayuda → Informar de un
+  problema…**, o [abre un issue](https://github.com/vg0904/Sudoku/issues/new) aquí en GitHub.
+
+Si prefieres no abrir una app que no está registrada con Apple, cualquiera con Xcode puede
+[compilarla desde el código fuente](#primeros-pasos).
 
 ## Funcionalidades
 
@@ -157,6 +181,10 @@ localización, animaciones y pruebas).
 Sobre el idioma: **los comentarios del código están en español**, mientras que los identificadores,
 las claves de texto y la documentación están en inglés. En las contribuciones se aceptan comentarios
 en cualquiera de los dos idiomas.
+
+## Novedades
+
+Consulta el [CHANGELOG](CHANGELOG.md) (en inglés) para ver qué cambió en cada versión.
 
 ## Licencia
 

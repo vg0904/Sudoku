@@ -8,37 +8,61 @@ modern, idiomatic APIs (`@Observable`, Swift Testing, Swift concurrency, SwiftDa
 
 *[Leer en español](README.es.md)*
 
-## Download
+## Just want to play?
 
-Download `Sudoku.zip` from the [latest release](https://github.com/vg0904/Sudoku/releases/latest),
-unzip it and move **Sudoku** to your Applications folder.
+You don't need to know anything about programming. You only need a Mac with **macOS 27 or
+later**.
 
-### Opening the app for the first time
+### 1. Download it
 
-The app isn't notarized by Apple ([here's why](#about-this-project)), so the first time you open
-it macOS will say it can't verify the developer. You only need to allow it once:
+1. Go to the [latest release](https://github.com/vg0904/Sudoku/releases/latest).
+2. Under **Assets**, click **Sudoku.zip**. It goes to your **Downloads** folder.
+3. Open **Downloads** and double-click **Sudoku.zip**. A **Sudoku** app appears next to it.
+4. Drag **Sudoku** into your **Applications** folder.
 
-1. Open **Sudoku**. When macOS shows the warning, click **Done**.
-2. Open **System Settings → Privacy & Security**.
-3. Scroll down to the **Security** section. Next to the message about Sudoku, click **Open Anyway**
-   and confirm with your password or Touch ID.
-4. Click **Open** in the dialog that appears.
+### 2. Open it the first time
 
-From then on it opens like any other app.
+Because Sudoku is a free project and isn't registered with Apple ([here's why](#about-this-project)),
+the first time you open it your Mac shows a warning saying it can't check the app. That's
+expected. You only have to allow it **once**:
 
-<details>
-<summary>Prefer the Terminal?</summary>
+1. Double-click **Sudoku** in Applications. When the warning appears, close it with **Done** (not
+   **Move to Trash**).
+2. Open **System Settings** (the grey gear icon in the Dock, or  → System Settings).
+3. Click **Privacy & Security** in the sidebar.
+4. Scroll down to the **Security** section. You'll see a message about Sudoku: click
+   **Open Anyway**, then enter your Mac's password or use Touch ID.
+5. Click **Open**.
 
-This removes the quarantine flag macOS adds to downloaded files:
+That's it. From now on, Sudoku opens like any other app.
 
-```sh
-xattr -dr com.apple.quarantine /Applications/Sudoku.app
-```
+### 3. Play
 
-</details>
+- **Click a cell**, then **type a number** on your keyboard or click one on the number pad at the
+  bottom. You can also move around with the arrow keys.
+- Each row, each column and each 3×3 box must contain every number from 1 to 9, exactly once.
+- A wrong number turns red and costs a heart ♥. Select it and press **Delete** (⌫) to erase it.
+- The number pad shows how many of each number you've placed; a ✓ means all nine are done.
+- Pick the difficulty at the top of the window, and press ⌘P to pause. Your game is saved when you
+  quit, so you can carry on later.
+- Colours, lives, celebrations and more are in **Sudoku → Settings** (⌘,).
 
-If you'd rather not run an app that isn't notarized, you can [build it yourself](#getting-started)
-from the source code in a few minutes.
+### Something went wrong?
+
+- **There's no "Open Anyway" button:** open Sudoku once first (step 1), then check System Settings
+  again. The button only appears after you've tried to open the app.
+- **The warning says the app is damaged:** that sometimes happens with downloaded apps. Open the
+  **Terminal** app, paste the line below and press Return, then open Sudoku again:
+
+  ```sh
+  xattr -dr com.apple.quarantine /Applications/Sudoku.app
+  ```
+
+- **Still stuck, or found a bug?** In Sudoku, choose **Help → Report a Problem…**, or
+  [open an issue](https://github.com/vg0904/Sudoku/issues/new) here on GitHub.
+
+If you'd rather not open an app that isn't registered with Apple, anyone with Xcode can
+[build it from the source code](#getting-started) instead.
 
 ## Features
 
@@ -152,6 +176,10 @@ conventions this project relies on (actor isolation, localisation, animations an
 
 A note on language: **code comments are written in Spanish**, while identifiers, string keys and
 documentation are in English. Comments in either language are welcome in contributions.
+
+## What's new
+
+See the [CHANGELOG](CHANGELOG.md) for what changed in each version.
 
 ## License
 
