@@ -174,7 +174,11 @@ struct SavedGameTests {
     func savingNilClears() throws {
         let (store, cleanup) = makeIsolatedStore()
         defer { cleanup() }
-        store.save(try #require(makeRunningGame().snapshot()))
+        // Se desenvuelve antes de llamar a `save`: como `save` acepta un opcional, un `#require`
+        // escrito dentro de la llamada devolvería otra vez un opcional y no comprobaría nada.
+        let saved = try #require(makeRunningGame().snapshot())
+        store.save(saved)
+        #expect(store.load() != nil, "Primero tiene que haber una foto que borrar")
 
         store.save(nil)
 

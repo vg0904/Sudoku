@@ -144,6 +144,10 @@ Text lives in `Sudoku/Localizable.xcstrings` (English is the base language, plus
 ### Tests
 
 - Tests use **Swift Testing** (`@Test`, `#expect`, `#require`), one file per area in `SudokuTests/`.
+- **Unwrap with `#require` into a constant before passing a value to a parameter that accepts an
+  optional.** Written inline (`save(try #require(x))` where `save` takes `T?`), `#require` resolves
+  to an overload that returns the optional again and checks nothing; Swift Testing warns that it's
+  redundant.
 - Make logic testable by **injecting what varies**: the current time (`now:` parameters), the
   random number generator (`SeededRandomNumberGenerator` in the tests), `UserDefaults`, and the
   SwiftData context (use `ModelConfiguration(isStoredInMemoryOnly: true)`).
