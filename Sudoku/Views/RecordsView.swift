@@ -48,6 +48,13 @@ private struct RecordsTable: View {
     @Query private var records: [GameRecord]
     @Environment(\.modelContext) private var context
 
+    /// Las filas seleccionadas. Con ellas se activan el botón de borrar y la tecla ⌫.
+    @State private var selection = Set<GameRecord.ID>()
+    /// Los récords que se van a borrar, a la espera de confirmación. Borrar no se puede deshacer,
+    /// así que siempre se pregunta antes.
+    @State private var pendingDeletion = Set<GameRecord.ID>()
+    @State private var isConfirmingDeletion = false
+
     init(difficulty: Difficulty) {
         // Mismo filtro y mismo orden que `RecordStore.records(for:)`, para que la ventana y la
         // tarjeta de victoria nunca discrepen sobre el puesto.
@@ -73,7 +80,7 @@ private struct RecordsTable: View {
     }
 
     private var table: some View {
-        Table(records) {
+        Table(records, selection: $selection) {
             TableColumn("#") { record in
                 Text("\(rank(of: record))")
                     .monospacedDigit()
@@ -108,12 +115,45 @@ private struct RecordsTable: View {
                 Text(record.date, format: .dateTime.day().month(.abbreviated).year())
             }
         }
+        // El clic derecho actúa sobre la fila pulsada (o sobre toda la selección, si la fila es
+        // parte de ella), que no siempre es lo seleccionado: por eso recibe sus propios `ids`.
         .contextMenu(forSelectionType: GameRecord.ID.self) { ids in
             Button("Delete Record", role: .destructive) {
-                delete(ids)
+                requestDeletion(of: ids)
             }
             .disabled(ids.isEmpty)
         }
+        #if os(macOS)
+        // ⌫ y Edición → Borrar, como en cualquier lista de Mac.
+        .onDeleteCommand { requestDeletion(of: selection) }
+        #endif
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Delete Record", systemImage: "trash", role: .destructive) {
+                    requestDeletion(of: selection)
+                }
+                .help("Delete the selected records")
+                .disabled(selection.isEmpty)
+            }
+        }
+        .confirmationDialog(
+            "Delete \(pendingDeletion.count) records?",
+            isPresented: $isConfirmingDeletion
+        ) {
+            Button("Delete", role: .destructive) {
+                delete(pendingDeletion)
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This can't be undone.")
+        }
+    }
+
+    /// Pide confirmación para borrar estos récords.
+    private func requestDeletion(of ids: Set<GameRecord.ID>) {
+        guard !ids.isEmpty else { return }
+        pendingDeletion = ids
+        isConfirmingDeletion = true
     }
 
     /// El puesto de un récord en la tabla, desde 1.
@@ -140,6 +180,7 @@ private struct RecordsTable: View {
         for record in records where ids.contains(record.id) {
             try? store.delete(record)
         }
+        selection.subtract(ids)
     }
 }
 
@@ -147,6 +188,9 @@ private struct RecordsTable: View {
     let container = previewRecordsContainer(filled: true)
     return RecordsView()
         .modelContainer(container)
+        // Sus propios ajustes: si no, abriría en la dificultad que se miró por última vez en la
+        // app real, y los récords de ejemplo son de Medio.
+        .defaultAppStorage(UserDefaults(suiteName: "preview.records") ?? .standard)
 }
 
 #Preview("Vacía") {

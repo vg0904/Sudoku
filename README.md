@@ -43,8 +43,10 @@ That's it. From now on, Sudoku opens like any other app.
 - Each row, each column and each 3×3 box must contain every number from 1 to 9, exactly once.
 - A wrong number turns red and costs a heart ♥. Select it and press **Delete** (⌫) to erase it.
 - The number pad shows how many of each number you've placed; a ✓ means all nine are done.
-- Pick the difficulty at the top of the window, and press ⌘P to pause. Your game is saved when you
-  quit, so you can carry on later.
+- The app opens on a start menu: choose **Continue** to pick up your last game, or pick a
+  difficulty and click **New Game**.
+- Press ⌘P to pause. Your game is saved when you quit or go back to the menu (the 🏠 button or ⇧⌘M), so you
+  can carry on later.
 - Colours, lives, celebrations and more are in **Sudoku → Settings** (⌘,).
 
 ### Something went wrong?
@@ -78,11 +80,12 @@ If you'd rather not open an app that isn't registered with Apple, anyone with Xc
   Jump, Shine or None), with a live preview in Settings. Confetti when you win.
 - **Arcade-style records**: a top 10 per difficulty stored with SwiftData. Enter your name when
   you set a record; the last name is remembered and previous names are one click away. Each record
-  shows the time, lives used, mistakes and date.
+  shows the time, lives used, mistakes and date, and you can delete any of them (⌫ or the trash
+  button).
 - **Fair timing**: pause with ⌘P (the board is hidden while paused) and the game pauses
   automatically when you switch apps.
-- **Your game is saved**: quit whenever you like, and pick up where you left off the next time you
-  open the app.
+- **Your game is saved**: quit whenever you like, and pick up where you left off with **Continue**
+  in the start menu.
 - **Colour themes**: follows your Mac's accent colour by default, or pick one of eight colours tuned
   to stay readable in light and dark mode.
 - **Accessibility**: VoiceOver reads every cell's number and state, and can also announce its row
@@ -101,6 +104,7 @@ If you'd rather not open an app that isn't registered with Apple, anyone with Xc
 | ⌘N | New game |
 | ⌘R | Clear the board (asks for confirmation) |
 | ⌘P | Pause / resume |
+| ⇧⌘M | Save the game and go back to the start menu |
 | ⌘L | Open the Records window |
 | ⌘, | Settings |
 

@@ -17,7 +17,11 @@ The first public release.
 - Clearing the board asks for confirmation.
 - Pause with ⌘P or the toolbar button. The board is hidden while paused, and the game pauses
   automatically when you switch to another app or window.
-- The game in progress is saved automatically and resumed, paused, the next time you open the app.
+- A start menu with the app's logo: continue the saved game, or pick a difficulty and start a new
+  one. **Back to Menu** (the 🏠 toolbar button, or ⇧⌘M in the Game menu) saves the game and goes
+  back to it.
+- The game in progress is saved automatically, and **Continue** in the start menu picks it up
+  right where you left off, with the clock running from the saved time.
 
 ### Board and number pad
 
@@ -38,7 +42,8 @@ The first public release.
 - Arcade-style top 10 per difficulty. Enter your name when you set a record: the last name used is
   pre-filled and previous names are one click away.
 - Each record shows the time, the lives setting, mistakes and date.
-- A separate Records window (⌘L) with one table per difficulty.
+- A separate Records window (⌘L) with one table per difficulty. Select records and delete them with
+  ⌫, the toolbar's trash button or a right-click; it asks for confirmation first.
 - The victory card shows your best time when you don't set a new record.
 
 ### Appearance and accessibility

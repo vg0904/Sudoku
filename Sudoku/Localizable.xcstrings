@@ -168,6 +168,16 @@
         }
       }
     },
+    "Back to Menu" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Volver al menú"
+          }
+        }
+      }
+    },
     "Blue" : {
       "localizations" : {
         "es" : {
@@ -299,6 +309,16 @@
         }
       }
     },
+    "Continue" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar"
+          }
+        }
+      }
+    },
     "Date" : {
       "localizations" : {
         "es" : {
@@ -309,12 +329,72 @@
         }
       }
     },
+    "Delete" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Eliminar"
+          }
+        }
+      }
+    },
+    "Delete %lld records?" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "machine_translated",
+                  "value" : "Delete %lld record?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "machine_translated",
+                  "value" : "Delete %lld records?"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "machine_translated",
+                  "value" : "¿Eliminar %lld récord?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "machine_translated",
+                  "value" : "¿Eliminar %lld récords?"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Delete Record" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "Eliminar récord"
+          }
+        }
+      }
+    },
+    "Delete the selected records" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Elimina los récords seleccionados"
           }
         }
       }
@@ -539,6 +619,17 @@
         }
       }
     },
+    "Menu" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menú"
+          }
+        }
+      }
+    },
     "Mistakes" : {
       "localizations" : {
         "es" : {
@@ -585,6 +676,16 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "¡Nuevo récord! Puesto %lld"
+          }
+        }
+      }
+    },
+    "No game in progress" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "No hay ninguna partida en curso"
           }
         }
       }
@@ -836,6 +937,16 @@
         }
       }
     },
+    "Save the game and go back to the start menu" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guarda la partida y vuelve al menú de inicio"
+          }
+        }
+      }
+    },
     "Saved as %@" : {
       "localizations" : {
         "es" : {
@@ -962,6 +1073,16 @@
           "stringUnit" : {
             "state" : "machine_translated",
             "value" : "El tiempo siempre se muestra al terminar, aunque el cronómetro esté oculto."
+          }
+        }
+      }
+    },
+    "This can't be undone." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "machine_translated",
+            "value" : "Esta acción no se puede deshacer."
           }
         }
       }

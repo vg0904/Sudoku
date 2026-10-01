@@ -44,8 +44,10 @@ Listo. A partir de ahora, Sudoku se abre como cualquier otra app.
 - Un número equivocado se pone en rojo y te quita un corazón ♥. Selecciónalo y pulsa **Borrar** (⌫)
   para quitarlo.
 - El teclado numérico muestra cuántos llevas de cada número; una ✓ indica que ya están los nueve.
-- Elige la dificultad arriba de la ventana y pulsa ⌘P para pausar. La partida se guarda al cerrar
-  la app, así que puedes seguir más tarde.
+- La app abre con un menú de inicio: elige **Continuar** para seguir tu última partida, o elige una
+  dificultad y pulsa **Nueva partida**.
+- Pulsa ⌘P para pausar. La partida se guarda al cerrar la app o al volver al menú (el botón 🏠 o ⇧⌘M), así
+  que puedes seguir más tarde.
 - Los colores, las vidas, las celebraciones y más están en **Sudoku → Ajustes** (⌘,).
 
 ### ¿Algo salió mal?
@@ -79,11 +81,12 @@ Si prefieres no abrir una app que no está registrada con Apple, cualquiera con 
   (Onda, Volteo, Salto, Destello o Ninguna) y una vista previa en los Ajustes. Confeti al ganar.
 - **Récords estilo arcade**: un top 10 por dificultad guardado con SwiftData. Escribes tu nombre al
   hacer récord; el último se recuerda y los anteriores están a un clic. Cada récord muestra el
-  tiempo, las vidas usadas, los errores y la fecha.
+  tiempo, las vidas usadas, los errores y la fecha, y puedes eliminar los que quieras (⌫ o el botón
+  de la papelera).
 - **Tiempos justos**: pausa con ⌘P (el tablero se oculta mientras tanto) y pausa automática al
   cambiar de app.
-- **La partida se guarda**: cierra la app cuando quieras y sigue donde lo dejaste la próxima vez que
-  la abras.
+- **La partida se guarda**: cierra la app cuando quieras y sigue donde lo dejaste con **Continuar**
+  en el menú de inicio.
 - **Temas de color**: por defecto sigue el color de acento del Mac, o elige uno de ocho colores
   ajustados para leerse bien en modo claro y oscuro.
 - **Accesibilidad**: VoiceOver lee el número y el estado de cada celda, y también puede decir su
@@ -103,6 +106,7 @@ Si prefieres no abrir una app que no está registrada con Apple, cualquiera con 
 | ⌘N | Nueva partida |
 | ⌘R | Borrar el tablero (pide confirmación) |
 | ⌘P | Pausar / reanudar |
+| ⇧⌘M | Guardar la partida y volver al menú de inicio |
 | ⌘L | Abrir la ventana de Récords |
 | ⌘, | Ajustes |
 

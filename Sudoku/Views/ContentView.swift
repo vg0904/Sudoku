@@ -54,7 +54,13 @@ struct ContentView: View {
     /// pisen la partida guardada de verdad.
     private let savedGameStore: SavedGameStore
 
-    init(savedGameStore: SavedGameStore = SavedGameStore()) {
+    /// Lo que se eligió en el menú: retomar la partida guardada o empezar una.
+    private let start: GameStart
+
+    @Environment(AppNavigator.self) private var navigator
+
+    init(start: GameStart = .new(.medium), savedGameStore: SavedGameStore = SavedGameStore()) {
+        self.start = start
         self.savedGameStore = savedGameStore
     }
 
@@ -127,6 +133,9 @@ struct ContentView: View {
         // Deja que los comandos del menú (⌘N, ⌘R) alcancen esta partida.
         .focusedSceneValue(\.sudokuGame, game)
         .focusedSceneValue(\.isConfirmingClearBoard, $isConfirmingClearBoard)
+        // Se guarda al desaparecer, no en el botón: así da igual cómo se salga del tablero (el
+        // botón 🏠, ⇧⌘M o cerrar la ventana).
+        .onDisappear(perform: saveOnExit)
         .overlay { outcomeOverlay }
         // El confeti va por encima de la tarjeta de victoria y llega hasta el borde de la
         // ventana, pasando por detrás de la barra de herramientas.
@@ -159,21 +168,33 @@ struct ContentView: View {
             }
         }
         .task {
-            // Si hay una partida a medias, se retoma (en pausa). Si no, se empieza una nueva.
-            if let saved = savedGameStore.load(), game.restore(saved) {
-                isBoardFocused = true
-                return
+            // La partida guardada se retoma en pausa. Si no se puede restaurar, se empieza una
+            // nueva con la misma dificultad en lugar de dejar el tablero vacío.
+            switch start {
+            case .resume(let saved):
+                if game.restore(saved) {
+                    // `restore` la deja en pausa para que el reloj no corra mientras nadie mira.
+                    // Aquí sí hay alguien: acaba de pulsar Continuar, y pedirle además Reanudar
+                    // sería un paso de más.
+                    game.resume()
+                    isBoardFocused = true
+                    return
+                }
+                game.maxLives = settings.maxLives
+                await game.newGame(difficulty: saved.difficulty)
+            case .new(let difficulty):
+                game.maxLives = settings.maxLives
+                await game.newGame(difficulty: difficulty)
             }
-
-            game.maxLives = settings.maxLives
-            await game.newGame(difficulty: game.difficulty)
             isBoardFocused = true
         }
         .onChange(of: game.difficulty) { _, newDifficulty in
             // Solo cuando cambia la dificultad del selector. Al retomar una partida guardada,
             // `difficulty` también cambia, pero ya coincide con la del tablero y no hay que generar
-            // otro.
-            guard newDifficulty != game.puzzle.difficulty else { return }
+            // otro. Mientras se genera tampoco: es `newGame` quien la acaba de cambiar (por
+            // ejemplo, al empezar desde el menú con otra dificultad), y el selector está
+            // desactivado.
+            guard newDifficulty != game.puzzle.difficulty, !game.isGenerating else { return }
             Task { await game.newGame(difficulty: newDifficulty) }
         }
         // Guarda tras cada jugada, borrado, pausa o partida nueva. Si la partida acaba de
@@ -218,6 +239,13 @@ struct ContentView: View {
     /// Así el contenido queda solo para jugar y el tablero gana espacio.
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigation) {
+            // Mismo nombre que el comando del menú Partida (⇧⌘M), que hace lo mismo.
+            Button("Back to Menu", systemImage: "house", action: navigator.showMenu)
+                .help("Save the game and go back to the start menu")
+                .disabled(game.isGenerating)
+        }
+
         // En macOS, `.principal` centra el elemento en la barra.
         ToolbarItem(placement: .principal) {
             Picker("Difficulty", selection: $game.difficulty) {
@@ -410,6 +438,15 @@ struct ContentView: View {
         }
     }
 
+    /// Lo último antes de que el tablero desaparezca. La partida queda en pausa, igual que al
+    /// cerrar la app, para que "Continuar" la retome sin haber contado el tiempo fuera del tablero.
+    private func saveOnExit() {
+        // Un récord recién ganado sin guardar se guarda ya: después de esto la vista no existe.
+        savePendingRecord()
+        game.pause()
+        savedGameStore.save(game.snapshot())
+    }
+
     /// Abre la ventana de récords en la dificultad de la partida actual.
     private func showRecords() {
         recordsDifficultyRaw = game.difficulty.rawValue
@@ -420,6 +457,7 @@ struct ContentView: View {
 #Preview {
     ContentView(savedGameStore: SavedGameStore(defaults: UserDefaults(suiteName: "preview") ?? .standard))
         .environment(GameSettings(defaults: UserDefaults(suiteName: "preview") ?? .standard))
+        .environment(AppNavigator(defaults: UserDefaults(suiteName: "preview") ?? .standard))
         // En memoria: los récords de la preview no se mezclan con los de verdad.
         .modelContainer(for: GameRecord.self, inMemory: true)
 }

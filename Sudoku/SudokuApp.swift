@@ -32,7 +32,7 @@ struct SudokuApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
                 .appEnvironment(settings)
         }
         .modelContainer(recordsContainer)
@@ -84,6 +84,8 @@ struct GameCommands: Commands {
     /// La partida de la ventana con el foco. Es `nil` si no hay ninguna ventana activa.
     @FocusedValue(\.sudokuGame) private var game
     @FocusedBinding(\.isConfirmingClearBoard) private var isConfirmingClearBoard
+    /// La navegación de la ventana con el foco: dice si se ve el menú o el tablero.
+    @FocusedValue(\.appNavigator) private var navigator
     @Environment(\.openWindow) private var openWindow
 
     var body: some Commands {
@@ -102,12 +104,17 @@ struct GameCommands: Commands {
 
             Divider()
 
+            // En el tablero genera otro con la misma dificultad; en el menú de inicio, empieza con
+            // la elegida en su selector, igual que su botón Nueva partida.
             Button("New Game") {
-                guard let game else { return }
-                Task { await game.newGame() }
+                if let game {
+                    Task { await game.newGame() }
+                } else {
+                    navigator?.startNewGame()
+                }
             }
             .keyboardShortcut("n")
-            .disabled(game == nil)
+            .disabled(game == nil && navigator == nil)
 
             // No limpia directamente: pide a la ventana que muestre la confirmación.
             Button("Clear Board") {
@@ -115,6 +122,16 @@ struct GameCommands: Commands {
             }
             .keyboardShortcut("r")
             .disabled(!(game?.hasProgress ?? false))
+
+            Divider()
+
+            // ⌘M ya es Minimizar en todas las apps de Mac, así que se usa ⇧⌘M.
+            // Como el botón 🏠: solo desde el tablero, y no mientras se genera.
+            Button("Back to Menu") {
+                navigator?.showMenu()
+            }
+            .keyboardShortcut("m", modifiers: [.command, .shift])
+            .disabled(!(navigator?.isShowingGame ?? false) || game?.isGenerating == true)
 
             #if DEBUG
             Divider()

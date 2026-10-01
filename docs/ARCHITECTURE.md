@@ -73,9 +73,13 @@ A game in progress survives quitting the app:
   `ContentView` watches that single value and writes the snapshot through `SavedGameStore`, so the
   model never knows where or how it's stored. On quit (⌘Q), the game is paused and saved once
   more so the seconds since the last move aren't lost.
-- On launch, `restore(_:)` brings the game back **paused**, so the clock doesn't run while the
-  window opens. A snapshot that fails `isValid` (damaged data, or a different `formatVersion`) is
-  ignored and a new game starts instead.
+- The start menu reads the snapshot to offer **Continue**. Choosing it hands the snapshot to
+  `ContentView` as `GameStart.resume`. `restore(_:)` always brings the game back **paused**, the
+  safe default for the model, and `ContentView` resumes it straight away: the player just chose
+  Continue, so asking them to press Resume as well would be one step too many. A snapshot that
+  fails `isValid` (damaged data, or a different `formatVersion`) isn't offered at all.
+- Leaving the board (back to the menu, or closing the window) pauses and saves the game, the
+  same as quitting.
 
 ### Events: the model says *what*, the view says *how*
 
@@ -93,7 +97,18 @@ without real time, and SwiftUI cancels a pending animation on its own if a new g
 
 ## Views
 
-`ContentView` puts the window together: the toolbar, the header (timer and hearts), the board, the
+`RootView` switches between the start menu (`StartMenuView`) and the board, following
+`AppNavigator`, an `@Observable` model with the current screen and the menu's difficulty. Each
+visit to the board creates a new `ContentView`, and with it a new `SudokuGame`: `GameStart` says
+whether it resumes the saved game or generates a new one at the chosen difficulty. The board saves
+in `onDisappear`, so leaving by any route (the 🏠 button, ⇧⌘M or closing the window) saves the same
+way.
+
+The Game menu reaches the navigator through `FocusedValues`. It's a class rather than a closure on
+purpose: SwiftUI can't compare closures, so a closure in `FocusedValues` (or the environment) counts
+as changed on every update, while a class compares by identity.
+
+`ContentView` puts the board's window together: the toolbar, the header (timer and hearts), the board, the
 number pad and the overlays (generating, paused, victory, defeat, confetti). It also handles the
 keyboard, automatic pausing and the records flow.
 
