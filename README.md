@@ -1,5 +1,7 @@
 # Sudoku
 
+<img width="250" height="250" alt="sudoku_logo_light" src="https://github.com/user-attachments/assets/202f80e5-3dae-4efc-914c-178842fd35cc" />
+
 A native, ad-free Sudoku for the Mac, written in SwiftUI.
 
 It started as a hands-on way to learn Swift and Apple's frameworks, so the code favours
@@ -67,6 +69,7 @@ If you'd rather not open an app that isn't registered with Apple, anyone with Xc
 [build it from the source code](#getting-started) instead.
 
 ## Features
+<img width="754" height="721" alt="Gameplay" src="https://github.com/user-attachments/assets/37d0f8bf-b32f-4fcd-9725-540943613c13" />
 
 - **Random puzzles with a unique solution** at three difficulty levels, generated off the main
   thread so the window never freezes.
